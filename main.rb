@@ -1,12 +1,20 @@
 require 'sinatra'
 require 'whois'
+require 'haml'
+require 'json'
 
 get '/' do
-	"Go to whois.com/jasonormand.com"
+	haml :index
 end
 
-get '/whois/:url' do
-	c = Whois::Client.new
-	r = c.query(params[:url])
-	"#{r}"
+get '/lookup' do
+	@lookup_url = params[:url]
+	@lookup_info = Whois.query(params[:url]).to_s.gsub(/\n/, '<br>')
+	haml :lookup
+end
+
+get '/lookup.json' do
+	@lookup_info = Whois.query(params[:url])
+	content_type :json
+	@lookup_info.to_json
 end
