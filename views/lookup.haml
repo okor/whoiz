@@ -3,8 +3,37 @@
 	%head
 		%title A free whois API service
 	%body
-		%div{:style => "border: solid 5px black; padding: 15px; margin-bottom: 15px;"}
-			= @lookup_url
-		%div{:style => "border: solid 5px black; padding: 15px;"}
-			= @lookup_info
+
+		%h3 URL
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["domain"]
+
+		%h3 Admin Contact
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["admin_contacts"]
+
+		%h3 Technical Contact
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["technical_contacts"]
+
+		%h3 Create Date
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["created_on"]
+
+		%h3 Expire Date
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["expires_on"]
+
+		%h3 WHOIS Server
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["whois_server"]
+
+		%h3 Nameservers
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			- @formatted_response["nameservers"].each do |name|
+				= name.to_s + " <br />"
+
+		%h3 Detailed Response	
+		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
+			= @formatted_response["detailed"]
 			
