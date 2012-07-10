@@ -7,6 +7,10 @@ get '/' do
 	haml :index
 end
 
+get '/ip.json' do
+	{ :ip => request.ip }.to_json
+end
+
 get '/lookup' do
 	@lookup_info = Whois.query(params[:url])
 	@formatted_response = {
