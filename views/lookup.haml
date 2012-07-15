@@ -10,11 +10,19 @@
 
 		%h3 Admin Contact
 		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["admin_contacts"]
+			- if @formatted_response["admin_contacts"]
+				- @formatted_response["admin_contacts"].each do |contact|
+					= contact.to_s + " <br />"
+			- else
+				= "none"
 
 		%h3 Technical Contact
 		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["technical_contacts"]
+			- if @formatted_response["technical_contacts"]
+				- @formatted_response["technical_contacts"].each do |contact|
+					= contact.to_s + " <br />"
+			- else
+				= "none"
 
 		%h3 Create Date
 		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}

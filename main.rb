@@ -3,6 +3,16 @@ require 'whois'
 require 'haml'
 require 'json'
 
+helpers do
+
+  def cache_for(mins = 1)
+    if settings.environment != :development
+      response['Cache-Control'] = "public, max-age=#{60*mins}"
+    end
+  end
+
+end
+
 get '/' do
 	haml :index
 end
@@ -19,11 +29,10 @@ get '/lookup' do
 		"expires_on" => @lookup_info.expires_on,
 		"whois_server" => @lookup_info.referral_whois,
 		"nameservers" => @lookup_info.nameservers,
-		"admin_contacts" => @lookup_info.admin_contacts,
+		"admin_contacts" => @lookup_info.admin_contacts[0],
 		"techical_contacts" => @lookup_info.technical_contacts,
 		"detailed" => @lookup_info.to_s.gsub(/\n/, '<br>')
 	}
-	puts @lookup_info.admin_contacts
 	haml :lookup
 end
 
@@ -35,8 +44,8 @@ get '/lookup.json' do
 		:expires_on => @lookup_info.expires_on,
 		:whois_server => @lookup_info.referral_whois,
 		:nameservers => @lookup_info.nameservers,
-		:admin_contacts => @lookup_info.admin_contacts,
-		:techical_contacts => @lookup_info.technical_contacts,
+		:admin_contacts => @lookup_info.admin_contacts[0],
+		:techical_contacts => @lookup_info.technical_contacts[0],
 		:detailed => @lookup_info
 	}.to_json
 end
