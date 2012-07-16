@@ -1,18 +1,7 @@
-@font-face {
-  font-family: 'Orbitron';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Orbitron'), url('/fonts/orbitron_medium') format('opentype');
-}
-
-
 body {
-  font-family: 'Orbitron', sans-serif;
   font-size: 14px;
   background: #dedede;
 }
-
-
 
 p {
   margin: 0;
