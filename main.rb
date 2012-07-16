@@ -4,26 +4,33 @@ require 'haml'
 require 'json'
 require 'ostruct'
 
+
 helpers do
 
-  def cache_for(mins = 1)
+  def cache_for_day
     if settings.environment != :development
-      response['Cache-Control'] = "public, max-age=#{60*mins}"
+      response['Cache-Control'] = "public, max-age=86400"
     end
   end
 
 end
 
+
 get '/' do
+	cache_for_day
 	haml :index
 end
+
 
 get '/ip.json' do
 	{ :ip => request.ip }.to_json
 end
 
+
 get '/lookup' do
 	begin
+		cache_for_day
+
 		@lookup_info = Whois.query(params[:url])
 		admin_contacts = Hash[@lookup_info.admin_contacts[0].each_pair.to_a]
 		technical_contacts = Hash[@lookup_info.technical_contacts[0].each_pair.to_a]
@@ -45,9 +52,12 @@ end
 
 get '/lookup.json' do
 	begin
+		cache_for_day
+
 		@lookup_info = Whois.query(params[:url])
 		admin_contacts = Hash[@lookup_info.admin_contacts[0].each_pair.to_a]
 		technical_contacts = Hash[@lookup_info.technical_contacts[0].each_pair.to_a]
+
 		content_type :json
 		{ :domain => @lookup_info.domain,
 			:created_on => @lookup_info.created_on,
