@@ -1,10 +1,12 @@
 !!!
 %html
-	%head
-		%title A free whois API service
-	%body
-		%p Just enter a URL, to do a WHOIS lookup.
+  %head
+    %title A free whois API service
+    %link{:rel => "stylesheet", :type => "text/css", :href => "/css/styles.css"}
+  %body
+    .info
+      %p.title Just enter a URL, to do a WHOIS lookup.
 
-		%form{ :action => "/lookup", :method => "get"}
-			%input{ :type => "text", :name => "url"}
-			%input{ :type => "submit", :value => "Lookup Whois"}
+      %form{ :action => "/lookup", :method => "get"}
+        %input{ :type => "text", :name => "url"}
+        %input.submit{ :type => "submit", :value => "Lookup Whois"}

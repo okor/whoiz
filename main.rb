@@ -2,6 +2,7 @@ require 'sinatra'
 require 'whois'
 require 'haml'
 require 'json'
+require 'ostruct'
 
 helpers do
 
@@ -22,30 +23,41 @@ get '/ip.json' do
 end
 
 get '/lookup' do
-	@lookup_info = Whois.query(params[:url])
-	@formatted_response = {
-		"domain" => @lookup_info.domain,
-		"created_on" => @lookup_info.created_on,
-		"expires_on" => @lookup_info.expires_on,
-		"whois_server" => @lookup_info.referral_whois,
-		"nameservers" => @lookup_info.nameservers,
-		"admin_contacts" => @lookup_info.admin_contacts[0],
-		"techical_contacts" => @lookup_info.technical_contacts,
-		"detailed" => @lookup_info.to_s.gsub(/\n/, '<br>')
-	}
-	haml :lookup
+	begin
+		@lookup_info = Whois.query(params[:url])
+		admin_contacts = Hash[@lookup_info.admin_contacts[0].each_pair.to_a]
+		technical_contacts = Hash[@lookup_info.technical_contacts[0].each_pair.to_a]
+
+		@formatted_response = {
+			"domain" => @lookup_info.domain,
+			"created_on" => @lookup_info.created_on,
+			"expires_on" => @lookup_info.expires_on,
+			"whois_server" => @lookup_info.referral_whois,
+			"nameservers" => @lookup_info.nameservers,
+			"admin_contacts" => admin_contacts,
+			"techical_contacts" => technical_contacts
+		}
+		haml :lookup
+	rescue
+		haml :error
+	end
 end
 
 get '/lookup.json' do
-	@lookup_info = Whois.query(params[:url])
-	content_type :json
-	{ :domain => @lookup_info.domain,
-		:created_on => @lookup_info.created_on,
-		:expires_on => @lookup_info.expires_on,
-		:whois_server => @lookup_info.referral_whois,
-		:nameservers => @lookup_info.nameservers,
-		:admin_contacts => @lookup_info.admin_contacts[0],
-		:techical_contacts => @lookup_info.technical_contacts[0],
-		:detailed => @lookup_info
-	}.to_json
+	begin
+		@lookup_info = Whois.query(params[:url])
+		admin_contacts = Hash[@lookup_info.admin_contacts[0].each_pair.to_a]
+		technical_contacts = Hash[@lookup_info.technical_contacts[0].each_pair.to_a]
+		content_type :json
+		{ :domain => @lookup_info.domain,
+			:created_on => @lookup_info.created_on,
+			:expires_on => @lookup_info.expires_on,
+			:whois_server => @lookup_info.referral_whois,
+			:nameservers => @lookup_info.nameservers,
+			:admin_contacts => admin_contacts,
+			:techical_contacts => technical_contacts
+		}.to_json
+	rescue
+		{"Error" => "Bad Request"}.to_json
+	end
 end

@@ -2,46 +2,48 @@
 %html
 	%head
 		%title A free whois API service
+		%link{:rel => "stylesheet", :type => "text/css", :href => "/css/styles.css"}
 	%body
+		.info
+			%p.title URL
+			%p.content
+				= @formatted_response["domain"]
 
-		%h3 URL
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["domain"]
+		.info
+			%p.title Admin Contact
+			%p.content
+				- if @formatted_response["admin_contacts"]
+					- @formatted_response["admin_contacts"].each do |contact|
+						= "<strong>" + contact[0].to_s + "</strong>: " + contact[1].to_s + "<br />"
+				- else
+					= "none"
 
-		%h3 Admin Contact
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			- if @formatted_response["admin_contacts"]
-				- @formatted_response["admin_contacts"].each do |contact|
-					= contact.to_s + " <br />"
-			- else
-				= "none"
+		.info
+			%p.title Technical Contact
+			%p.content
+				- if @formatted_response["technical_contacts"]
+					- @formatted_response["technical_contacts"].each do |contact|
+						= contact.to_s + " <br />"
+				- else
+					= "none"
 
-		%h3 Technical Contact
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			- if @formatted_response["technical_contacts"]
-				- @formatted_response["technical_contacts"].each do |contact|
-					= contact.to_s + " <br />"
-			- else
-				= "none"
+		.info
+			%p.title Create Date
+			%p.content
+				= @formatted_response["created_on"]
 
-		%h3 Create Date
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["created_on"]
+		.info
+			%p.title Expire Date
+			%p.content
+				= @formatted_response["expires_on"]
 
-		%h3 Expire Date
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["expires_on"]
+		.info
+			%p.title WHOIS Server
+			%p.content
+				= @formatted_response["whois_server"]
 
-		%h3 WHOIS Server
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["whois_server"]
-
-		%h3 Nameservers
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			- @formatted_response["nameservers"].each do |name|
-				= name.to_s + " <br />"
-
-		%h3 Detailed Response	
-		%div{:style => "border: solid 1px black; padding: 10px; border-radius: 15px"}
-			= @formatted_response["detailed"]
-			
+		.info
+			%p.title Nameservers
+			%p.content
+				- @formatted_response["nameservers"].each do |name|
+					= name.to_s + " <br />"
