@@ -12,23 +12,23 @@ helpers do
 
   def cache_for_day
     if settings.environment != :development
-      response['Cache-Control'] = "public, max-age=86400"
+      response['Cache-Control'] = 'public, max-age=86400'
     end
   end
 
 	def whois_lookup
-		@lookup_info = Whois.query(params[:url])
-		@admin_contacts = Hash[@lookup_info.admin_contacts[0].each_pair.to_a]
-		@technical_contacts = Hash[@lookup_info.technical_contacts[0].each_pair.to_a]
+		lookup_info = Whois.query(params[:url])
+		admin_contacts = Hash[lookup_info.admin_contacts[0].each_pair.to_a]
+		technical_contacts = Hash[lookup_info.technical_contacts[0].each_pair.to_a]
 
-		return {
-			"domain" => @lookup_info.domain,
-			"created_on" => @lookup_info.created_on,
-			"expires_on" => @lookup_info.expires_on,
-			"whois_server" => @lookup_info.referral_whois,
-			"nameservers" => @lookup_info.nameservers,
-			"admin_contacts" => @admin_contacts,
-			"techical_contacts" => @technical_contacts
+		{
+			:domain => lookup_info.domain,
+			:created_on => lookup_info.created_on,
+			:expires_on => lookup_info.expires_on,
+			:whois_server => lookup_info.referral_whois,
+			:nameservers => lookup_info.nameservers,
+			:admin_contacts => admin_contacts,
+			:techical_contacts => technical_contacts
 		}
 	end
 
@@ -62,6 +62,6 @@ get '/lookup.json' do
 		cache_for_day
 		whois_lookup.to_json
 	rescue
-		{"Error" => "Bad Request"}.to_json
+		{:Error => 'Bad Request'}.to_json
 	end
 end

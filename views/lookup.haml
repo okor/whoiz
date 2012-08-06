@@ -2,48 +2,49 @@
 %html
 	%head
 		%title A free whois API service
-		%link{:rel => "stylesheet", :type => "text/css", :href => "/css/styles.css"}
+		%link{:rel => 'stylesheet', :type => 'text/css', :href => '/css/styles.css'}
 	%body
 		.info
 			%p.title URL
 			%p.content
-				= @formatted_response["domain"]
+				= @formatted_response[:domain]
 
 		.info
 			%p.title Admin Contact
 			%p.content
-				- if @formatted_response["admin_contacts"]
-					- @formatted_response["admin_contacts"].each do |contact|
-						= "<strong>" + contact[0].to_s + "</strong>: " + contact[1].to_s + "<br />"
+				- if @formatted_response[:admin_contacts]
+					- @formatted_response[:admin_contacts].each do |contact|
+						= "<strong> #{contact[0]} </strong>: #{contact[1]} <br />"
 				- else
-					= "none"
+					= 'none'
 
 		.info
 			%p.title Technical Contact
 			%p.content
-				- if @formatted_response["technical_contacts"]
-					- @formatted_response["technical_contacts"].each do |contact|
-						= contact.to_s + " <br />"
+				- if @formatted_response[:technical_contacts]
+					- @formatted_response[:technical_contacts].each do |contact|
+						= "#{contact} <br />"
 				- else
-					= "none"
+					= 'none'
 
 		.info
 			%p.title Create Date
 			%p.content
-				= @formatted_response["created_on"]
+				= @formatted_response[:created_on]
 
 		.info
 			%p.title Expire Date
 			%p.content
-				= @formatted_response["expires_on"]
+				= @formatted_response[:expires_on]
 
 		.info
 			%p.title WHOIS Server
-			%p.content
-				= @formatted_response["whois_server"]
+			%ul.content
+				- @formatted_response[:whois_server].each do |server|
+					= "<li> #{server} </li>"
 
 		.info
 			%p.title Nameservers
-			%p.content
-				- @formatted_response["nameservers"].each do |name|
-					= name.to_s + " <br />"
+			%ul.content
+				- @formatted_response[:nameservers].each do |name|
+					= "<li> #{name} </li>"
