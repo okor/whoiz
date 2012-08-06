@@ -7,44 +7,44 @@
 		.info
 			%p.title URL
 			%p.content
-				= @formatted_response[:domain]
+				= @whois[:domain]
 
 		.info
 			%p.title Admin Contact
-			%p.content
-				- if @formatted_response[:admin_contacts]
-					- @formatted_response[:admin_contacts].each do |contact|
-						= "<strong> #{contact[0]} </strong>: #{contact[1]} <br />"
+			.content
+				- if @whois[:admin_contacts]
+					- @whois[:admin_contacts].each do |contact|
+						= "<p><strong> #{contact[0]} </strong>: #{contact[1]} </p>"
 				- else
 					= 'none'
 
 		.info
 			%p.title Technical Contact
-			%p.content
-				- if @formatted_response[:technical_contacts]
-					- @formatted_response[:technical_contacts].each do |contact|
-						= "#{contact} <br />"
+			.content
+				- if @whois[:technical_contacts]
+					- @whois[:technical_contacts].each do |contact|
+						= "<p> #{contact} </p>"
 				- else
 					= 'none'
 
 		.info
 			%p.title Create Date
 			%p.content
-				= @formatted_response[:created_on]
+				= @whois[:created_on]
 
 		.info
 			%p.title Expire Date
 			%p.content
-				= @formatted_response[:expires_on]
+				= @whois[:expires_on]
 
 		.info
 			%p.title WHOIS Server
 			%ul.content
-				- @formatted_response[:whois_server].each do |server|
+				- @whois[:whois_servers].each do |server|
 					= "<li> #{server} </li>"
 
 		.info
 			%p.title Nameservers
 			%ul.content
-				- @formatted_response[:nameservers].each do |name|
-					= "<li> #{name} </li>"
+				- @whois[:name_servers].each do |server|
+					= "<li> #{server} </li>"
