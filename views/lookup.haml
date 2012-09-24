@@ -5,46 +5,6 @@
 		%link{:rel => 'stylesheet', :type => 'text/css', :href => '/css/styles.css'}
 	%body
 		.info
-			%p.title URL
-			%p.content
-				= @whois[:domain]
-
-		.info
-			%p.title Admin Contact
-			.content
-				- if @whois[:admin_contacts]
-					- @whois[:admin_contacts].each do |contact|
-						= "<p><strong> #{contact[0]} </strong>: #{contact[1]} </p>"
-				- else
-					= 'none'
-
-		.info
-			%p.title Technical Contact
-			.content
-				- if @whois[:technical_contacts]
-					- @whois[:technical_contacts].each do |contact|
-						= "<p> #{contact} </p>"
-				- else
-					= 'none'
-
-		.info
-			%p.title Create Date
-			%p.content
-				= @whois[:created_on]
-
-		.info
-			%p.title Expire Date
-			%p.content
-				= @whois[:expires_on]
-
-		.info
-			%p.title WHOIS Server
-			%ul.content
-				- @whois[:whois_servers].each do |server|
-					= "<li> #{server} </li>"
-
-		.info
-			%p.title Nameservers
-			%ul.content
-				- @whois[:name_servers].each do |server|
-					= "<li> #{server} </li>"
+			%p.title Lookup
+			%pre.content
+				= @whois

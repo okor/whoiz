@@ -11,25 +11,11 @@ end
 helpers do
 
   def cache_for_day
-    if settings.environment != :development
-      response['Cache-Control'] = 'public, max-age=86400'
-    end
+    response['Cache-Control'] = 'public, max-age=86400'
   end
 
 	def whois_lookup
 		lookup_info = Whois.query(params[:url])
-		admin_contacts = Hash[lookup_info.admin_contacts[0].each_pair.to_a]
-		technical_contacts = Hash[lookup_info.technical_contacts[0].each_pair.to_a]
-
-		{
-			:domain => lookup_info.domain,
-			:created_on => lookup_info.created_on,
-			:expires_on => lookup_info.expires_on,
-			:whois_servers => lookup_info.referral_whois,
-			:nameservers => lookup_info.nameservers,
-			:admin_contacts => admin_contacts,
-			:techical_contacts => technical_contacts
-		}
 	end
 
 end
@@ -43,10 +29,11 @@ end
 
 get '/lookup' do
 	begin
-		# cache_for_day
+		cache_for_day
 		@whois = whois_lookup
 		haml :lookup
-	rescue
+	rescue Exception => e
+		@error = e
 		haml :error
 	end
 end
@@ -54,9 +41,10 @@ end
 
 get '/lookup.json' do
 	begin
-		# cache_for_day
-		whois_lookup.to_json
-	rescue
-		{:Error => 'Bad Request'}.to_json
+		cache_for_day
+		whois_lookup.to_s.force_encoding('utf-8').encode.to_json
+	rescue Exception => e
+		@error = e
+		{:Error => @error}.to_json
 	end
 end
