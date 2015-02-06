@@ -1,17 +1,25 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    coderay (1.1.0)
     haml (3.1.6)
     json (1.7.3)
     kgio (2.7.4)
+    method_source (0.8.2)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
     raindrops (0.10.0)
+    rb-readline (0.5.2)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
       tilt (~> 1.3, >= 1.3.3)
+    slop (3.6.0)
     tilt (1.3.3)
     unicorn (4.3.1)
       kgio (~> 2.6)
@@ -25,6 +33,8 @@ PLATFORMS
 DEPENDENCIES
   haml
   json
+  pry
+  rb-readline
   sinatra
   unicorn
   whois
