@@ -50,7 +50,7 @@ helpers do
   end
 
   def whois_lookup
-    lookup_info = Whois.query(params[:url])
+    lookup_info = Whois.query(params[:url] || params[:ip])
   end
 end
 
