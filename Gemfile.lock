@@ -36,7 +36,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    whois (2.6.3)
+    whois (4.1.0)
 
 PLATFORMS
   ruby
